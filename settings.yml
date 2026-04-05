@@ -1,0 +1,20 @@
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+framework_version: 2.3.7
+serverless_language: ''
+polling_url: https://trmnl.com/analytics.json
+polling_headers: authorization=bearer {{ user_token }}
+polling_body: ''
+id: 278505
+custom_fields:
+- keyname: user_token
+  field_type: string
+  name: User API Token
+  description: Your TRMNL User API Token from Account > API Keys
+  placeholder: user_jaksdjkajklsdjkls1241
+name: Plugin Analytics
+refresh_interval: 15

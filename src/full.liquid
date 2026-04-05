@@ -1,0 +1,191 @@
+<div class="layout layout--column layout--top gap gap--large">
+  <div class="w--[50cqw] h--full">
+    <table class="table table--condensed" data-table-limit="true">
+      <thead>
+        <tr>
+          <th><span class="title title--small lg:title--base">Plugin</span></th>
+          <th class="text--center px--1"><span class="title title--small lg:title--base">State</span></th>
+          <th class="text--right px--1"><span class="title title--small lg:title--base">Installs</span></th>
+          <th class="text--right px--1"><span class="title title--small lg:title--base">Forks</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for plugin in plugins_sorted %}
+        <tr>
+          <td>
+            <span class="label label--small lg:label--base" data-clamp="1">{{ plugin.name }}</span>
+          </td>
+          <td class="text--center px--1">
+            {% if plugin.state == 'healthy' %}
+            <span class="label label--small lg:label--base label--outline">{{ plugin.state | capitalize }}</span>
+            {% elsif plugin.state == 'degraded' %}
+            <span class="label label--small lg:label--base label--inverse">{{ plugin.state | capitalize }}</span>
+            {% elsif plugin.state == 'error' %}
+            <span class="label label--small lg:label--base label--inverse">{{ plugin.state | capitalize }}</span>
+            {% endif %}
+          </td>
+          <td class="text--right">
+            <span class="label label--small lg:label--base">{{ plugin.installs }}</span>
+          </td>
+          <td class="text--right">
+            <span class="label label--small lg:label--base">{{ plugin.forks }}</span>
+          </td>
+        </tr>
+        {% else %}
+        <td class="text--center py--10" colspan="4"><span class="title title--base">No plugins for author.</span></td>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="w--[50cqw] column gap--small lg:gap--xlarge">
+    <div class="flex flex--row flex--between mb--2">
+      <div class="px--5 text--center">
+        <div class="text--center">
+          <span class="value value--small lg:value--base">{{ data.stats.plugins | round: 0 }}</span>
+          <br />
+          <span class="label label--small lg:label--base">Plugin{% if data.stats.plugins != 1 %}s{% endif %}</span>
+        </div>
+      </div>
+      <div class="px--5">
+        <div class="text--center">
+          <span class="value value--small lg:value--base">{{ data.stats.connections | round: 0 }}</span>
+          <br />
+          <span class="label label--small lg:label--base">Connection{% if data.stats.connections != 1 %}s{% endif %}</span>
+        </div>
+      </div>
+      <div class="px--5">
+        <div class="text--center">
+          <span class="value value--small lg:value--base">{{ data.stats.pageviews | round: 0 }}</span>
+          <br />
+          <span class="label label--small lg:label--base">Pageview{% if data.stats.pageviews != 1 %}s{% endif %}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex--row flex--between my--2">
+      <div class="px--5 text--center">
+        <div class="text--center">
+          <span class="value value--small lg:value--base">{{ data.health.erroring.percent | round: 0 }}%</span>
+          <br />
+          <span class="label label--small lg:label--base">Erroring</span>
+        </div>
+      </div>
+      <div class="px--5">
+        <div class="text--center">
+          <span class="value value--small lg:value--base">{{ data.health.degraded.percent | round: 0 }}%</span>
+          <br />
+          <span class="label label--small lg:label--base">Degraded</span>
+        </div>
+      </div>
+      <div class="px--5">
+        <div class="text--center">
+          <span class="value value--small lg:value--base">{{ data.health.healthy.percent | round: 0 }}%</span>
+          <br />
+          <span class="label label--small lg:label--base">Healthy</span>
+        </div>
+      </div>
+    </div>
+    <!-- Status Chart -->
+    {% if data.health %}
+    <div class="flex flex--row gap--none my--2 rounded rounded--base">
+      <div class="bg--black" style="width: {{data.health.erroring.percent }}%; overflow: hidden;">
+        <span class="label label--small lg:label--base p--2 text--white">Erroring</span>
+      </div>
+      <div class="bg--gray-25" style="width: {{data.health.degraded.percent }}%; overflow: hidden;">
+        <span class="label label--small lg:label--base p--2 text--white">Degraded</span>
+      </div>
+      <div class="bg--gray-75" style="width: {{data.health.healthy.percent }}%; overflow: hidden;">
+        <span class="label label--small lg:label--base p--2">Healthy</span>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if data.growth | size > 0 %}
+    <div>
+      <div class="text--center">
+        <span class="description description--small">7 Day Connection Growth Trend</span>
+      </div>
+      <div class="h--44 lg:h--96" id="{{ growth_chart_id }}"></div>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<div class="title_bar">
+  <img class="image image-stroke--medium" src="data:image/svg+xml;base64,{{ logo_svg | base64_encode }}" />
+  <span class="title">Updated {{ 'now' | date: '%B %-d, %Y' }}</span>
+  <span class="instance">{{ trmnl.plugin_settings.instance_name }}</span>
+</div>
+
+<script>
+const growthData = {{ data.growth | json }};
+const formattedData = growthData.map(([date, value]) => [
+  new Date(date).getTime(),
+  value
+]);
+
+Highcharts.chart("{{ growth_chart_id }}", {
+  title: false,
+  chart: {
+    type: "column",
+    animation: false,
+  },
+
+  series: [{
+    data: formattedData,
+    color: {
+      pattern: {
+        image: "https://trmnl.com/images/grayscale/gray-10.png",
+        width: 12,
+        height: 12
+      }
+    }
+  }],
+
+  plotOptions: {
+    series: {
+      animation: false,
+      enableMouseTracking: false,
+      states: {
+        hover: { enabled: false }
+      },
+      pointPadding: 0.05,  // Reduced padding for more bars
+      groupPadding: 0.1,
+      borderWidth: 0
+    }
+  },
+
+  yAxis: {
+    allowDecimals: false,     // ✅ only whole numbers
+    tickInterval: 1,          // ✅ enforce integer steps
+    min: 0,                   // optional but helpful
+    labels: {
+      style: { fontSize: "16px", color: "#000000" }
+    },
+    gridLineDashStyle: "shortdot",
+    gridLineWidth: 1,
+    gridLineColor: "#000000",
+    title: { text: null }
+  },
+
+  xAxis: {
+    type: "datetime",         // ✅ switch to datetime
+    tickInterval: 24 * 3600 * 1000, // one day
+    labels: {
+      format: "{value:%a}",   // ✅ Mon, Tue, Wed...
+      rotation: 0,            // ✅ force horizontal
+      style: { fontSize: "16px", color: "#000000" },
+      y: 25
+    },
+    gridLineWidth: 1,
+    gridLineColor: "#000000",
+    title: { text: null }
+  },
+  tooltip: { enabled: false },
+  legend: { enabled: false },
+  credits: { enabled: false }
+});
+
+</script>

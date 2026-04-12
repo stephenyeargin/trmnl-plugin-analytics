@@ -1,72 +1,7 @@
-<div class="layout layout--column layout--top gap gap--large flex flox--column">
-    <div class="w--full">
-      <div class="flex flex--row flex--between">
-        <div class="px--5 text--center">
-          <div class="text--center">
-            <span class="value value--small lg:value--large">{{ data.stats.plugins | round: 0 }}</span>
-            <br />
-            <span class="label label--small lg:label--large">Plugin{% if data.stats.plugins != 1 %}s{% endif %}</span>
-          </div>
-        </div>
-        <div class="px--5">
-          <div class="text--center">
-            <span class="value value--small lg:value--large">{{ data.stats.connections | round: 0 }}</span>
-            <br />
-            <span class="label label--small lg:label--large">Connection{% if data.stats.connections != 1 %}s{% endif %}</span>
-          </div>
-        </div>
-        <div class="px--5">
-          <div class="text--center">
-            <span class="value value--small lg:value--large">{{ data.stats.pageviews | round: 0 }}</span>
-            <br />
-            <span class="label label--small lg:label--large">Pageview{% if data.stats.pageviews != 1 %}s{% endif %}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="divider my--3 lg:my--5"></div>
-
-      <div class="flex flex--row flex--between">
-        <div class="px--5 text--center">
-          <div class="text--center">
-            <span class="value value--small lg:value--large">{{ data.health.erroring.percent | round: 0 }}%</span>
-            <br />
-            <span class="label label--small lg:label--large">Erroring</span>
-          </div>
-        </div>
-        <div class="px--5">
-          <div class="text--center">
-            <span class="value value--small lg:value--large">{{ data.health.degraded.percent | round: 0 }}%</span>
-            <br />
-            <span class="label label--small lg:label--large">Degraded</span>
-          </div>
-        </div>
-        <div class="px--5">
-          <div class="text--center">
-            <span class="value value--small lg:value--large">{{ data.health.healthy.percent | round: 0 }}%</span>
-            <br />
-            <span class="label label--small lg:label--large">Healthy</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="divider my--3 lg:my--5"></div>
-
-      <!-- Status Chart -->
-      {% if data.health %}
-      <div class="flex flex--row gap--none rounded rounded--base">
-        <div class="bg--black" style="width: {{data.health.erroring.percent }}%; overflow: hidden;">
-          <span class="label label--small lg:label--base p--2 text--white">Erroring</span>
-        </div>
-        <div class="bg--gray-25" style="width: {{data.health.degraded.percent }}%; overflow: hidden;">
-          <span class="label label--small lg:label--base p--2 text--white">Degraded</span>
-        </div>
-        <div class="bg--gray-75" style="width: {{data.health.healthy.percent }}%; overflow: hidden;">
-          <span class="label label--small lg:label--base p--2">Healthy</span>
-        </div>
-      </div>
-      {% endif %}
-    </div>
+<div class="layout layout--row layout--top gap gap--large">
+  <div class="w--full h--full">
+    {% render 'table' plugins_sorted: plugins_sorted %}
+  </div>
 </div>
 
 <div class="title_bar">
@@ -74,5 +9,3 @@
   <span class="title">Updated {{ 'now' | date: '%B %-d, %Y' }}</span>
   <span class="instance">{{ trmnl.plugin_settings.instance_name }}</span>
 </div>
-
-</script>

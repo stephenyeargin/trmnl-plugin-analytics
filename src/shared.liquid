@@ -38,9 +38,49 @@
 	{% assign plugins_sorted = plugins_sorted | concat: plugin_array %}
 {% endfor %}
 
-{% assign growth_chart_id = "growth_chart_" | append_random %}
+{% assign growth_chart_landscape_id = "growth_chart_landscape_" | append_random %}
+{% assign growth_chart_portrait_id = "growth_chart_portrait_" | append_random %}
 
 <!-- import Highcharts libraries -->
 <script src="https://trmnl.com/js/highcharts/12.3.0/highcharts.js"></script>
 <script src="https://trmnl.com/js/highcharts/12.3.0/highcharts-more.js"></script>
 <script src="https://trmnl.com/js/highcharts/12.3.0/pattern-fill.js"></script>
+
+{% template table %}
+<table class="table table--condensed h--full" data-table-limit="true">
+  <thead>
+    <tr>
+      <th><span class="title title--small lg:title--base">Plugin</span></th>
+      <th class="text--center px--1"><span class="title title--small lg:title--base">State</span></th>
+      <th class="text--right px--1 portrait:hidden"><span class="title title--small lg:title--base">Installs</span></th>
+      <th class="text--right px--1 portrait:hidden"><span class="title title--small lg:title--base">Forks</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for plugin in plugins_sorted %}
+    <tr>
+      <td>
+        <span class="label label--small lg:label--base" data-clamp="1">{{ plugin.name }}</span>
+      </td>
+      <td class="text--center px--1">
+        {% if plugin.state == 'healthy' %}
+        <span class="label label--small lg:label--base label--success">✓&nbsp;{{ plugin.state | capitalize }}</span>
+        {% elsif plugin.state == 'degraded' %}
+        <span class="label label--small lg:label--base label--warning">⚠&nbsp;{{ plugin.state | capitalize }}</span>
+        {% elsif plugin.state == 'error' %}
+        <span class="label label--small lg:label--base label--error">⚠&nbsp;{{ plugin.state | capitalize }}</span>
+        {% endif %}
+      </td>
+      <td class="text--right portrait:hidden">
+        <span class="label label--small lg:label--base">{{ plugin.installs }}</span>
+      </td>
+      <td class="text--right portrait:hidden">
+        <span class="label label--small lg:label--base">{{ plugin.forks }}</span>
+      </td>
+    </tr>
+    {% else %}
+    <td class="text--center py--10" colspan="4"><span class="title title--base">No plugins for author.</span></td>
+    {% endfor %}
+  </tbody>
+</table>
+{% endtemplate %}

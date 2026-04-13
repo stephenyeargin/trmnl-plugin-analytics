@@ -1,5 +1,11 @@
 # TRMNL Analytics Plugin
 
+[![Build and Release](https://github.com/stephenyeargin/trmnl-plugin-analytics/actions/workflows/build.yml/badge.svg)](https://github.com/stephenyeargin/trmnl-plugin-analytics/actions/workflows/build.yml)
+
+![promo](assets/promo.png)
+
+## Screenshots
+
 ![screenshot](assets/screenshot.png)
 
 ## Development

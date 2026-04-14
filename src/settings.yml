@@ -4,12 +4,12 @@ no_screen_padding: 'no'
 dark_mode: 'no'
 static_data: ''
 polling_verb: get
-polling_url: 'https://trmnl.com/analytics.json'
-polling_headers: 'authorization=Bearer%20{{trmnl_api_key}}'
-name: TRMNL Plugin Analytics
+framework_version: latest
+serverless_language: ''
+polling_url: https://trmnl.com/analytics.json
+polling_headers: authorization=Bearer%20{{trmnl_api_key}}
+polling_body: ''
 id: 278505
-framework_version: 3.0.3
-refresh_interval: 1440
 custom_fields:
 - keyname: author_bio
   name: About This Plugin
@@ -23,3 +23,5 @@ custom_fields:
   name: TRMNL API Key
   description: Go to Account > User API Key
   placeholder: user_abcdef123456
+name: TRMNL Plugin Analytics
+refresh_interval: 1440

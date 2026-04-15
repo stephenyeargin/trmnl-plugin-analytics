@@ -4,7 +4,7 @@ no_screen_padding: 'no'
 dark_mode: 'no'
 static_data: ''
 polling_verb: get
-framework_version: latest
+framework_version: 3.0.3
 serverless_language: ''
 polling_url: https://trmnl.com/analytics.json
 polling_headers: authorization=Bearer%20{{trmnl_api_key}}
@@ -18,10 +18,11 @@ custom_fields:
   github_url: https://github.com/stephenyeargin/trmnl-plugin-analytics
   learn_more_url: https://trmnl.com/analytics
   email_address: stephen@yearg.in
+  category: analytics
 - keyname: trmnl_api_key
   field_type: password
   name: TRMNL API Key
   description: Go to Account > User API Key
   placeholder: user_abcdef123456
 name: TRMNL Plugin Analytics
-refresh_interval: 1440
+refresh_interval: 120

@@ -9,7 +9,7 @@ serverless_language: ''
 polling_url: https://trmnl.com/analytics.json
 polling_headers: authorization=Bearer%20{{trmnl_api_key}}
 polling_body: ''
-id: 278505
+id: 286220
 custom_fields:
 - keyname: author_bio
   name: About This Plugin

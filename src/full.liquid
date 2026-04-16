@@ -152,73 +152,74 @@ const formattedData = growthData.map(([date, value]) => [
   value
 ]);
 
-const chartTargetId = window.matchMedia("(orientation: portrait)").matches
-  ? "{{ growth_chart_portrait_id }}"
-  : "{{ growth_chart_landscape_id }}";
+const chartTargetIds = [
+  "{{ growth_chart_portrait_id }}",
+  "{{ growth_chart_landscape_id }}"
+];
 
-if (document.getElementById(chartTargetId)) {
-Highcharts.chart(chartTargetId, {
-  title: false,
-  chart: {
-    type: "column",
-    animation: false,
-  },
-
-  series: [{
-    data: formattedData,
-    color: {
-      pattern: {
-        image: "https://trmnl.com/images/grayscale/gray-10.png",
-        width: 12,
-        height: 12
-      }
-    }
-  }],
-
-  plotOptions: {
-    series: {
+chartTargetIds.forEach((chartTargetId) => {
+  Highcharts.chart(chartTargetId, {
+    title: false,
+    chart: {
+      type: "column",
       animation: false,
-      enableMouseTracking: false,
-      states: {
-        hover: { enabled: false }
+    },
+
+    series: [{
+      data: formattedData,
+      color: {
+        pattern: {
+          image: "https://trmnl.com/images/grayscale/gray-10.png",
+          width: 12,
+          height: 12
+        }
+      }
+    }],
+
+    plotOptions: {
+      series: {
+        animation: false,
+        enableMouseTracking: false,
+        states: {
+          hover: { enabled: false }
+        },
+        pointPadding: 0.05,  // Reduced padding for more bars
+        groupPadding: 0.1,
+        borderWidth: 0
+      }
+    },
+
+    yAxis: {
+      allowDecimals: false,     // ✅ only whole numbers
+      tickInterval: 1,          // ✅ enforce integer steps
+      min: 0,                   // optional but helpful
+      labels: {
+        style: { fontSize: "16px", color: "#000000" }
       },
-      pointPadding: 0.05,  // Reduced padding for more bars
-      groupPadding: 0.1,
-      borderWidth: 0
-    }
-  },
-
-  yAxis: {
-    allowDecimals: false,     // ✅ only whole numbers
-    tickInterval: 1,          // ✅ enforce integer steps
-    min: 0,                   // optional but helpful
-    labels: {
-      style: { fontSize: "16px", color: "#000000" }
+      gridLineDashStyle: "shortdot",
+      gridLineWidth: 1,
+      gridLineColor: "#000000",
+      title: { text: null }
     },
-    gridLineDashStyle: "shortdot",
-    gridLineWidth: 1,
-    gridLineColor: "#000000",
-    title: { text: null }
-  },
 
-  xAxis: {
-    type: "datetime",         // ✅ switch to datetime
-    tickInterval: 24 * 3600 * 1000, // one day
-    labels: {
-      format: "{value:%a}",   // ✅ Mon, Tue, Wed...
-      rotation: 0,            // ✅ force horizontal
-      style: { fontSize: "16px", color: "#000000" },
-      y: 25
+    xAxis: {
+      type: "datetime",         // ✅ switch to datetime
+      tickInterval: 24 * 3600 * 1000, // one day
+      labels: {
+        format: "{value:%a}",   // ✅ Mon, Tue, Wed...
+        rotation: 0,            // ✅ force horizontal
+        style: { fontSize: "16px", color: "#000000" },
+        y: 25
+      },
+      gridLineWidth: 1,
+      gridLineColor: "#000000",
+      title: { text: null }
     },
-    gridLineWidth: 1,
-    gridLineColor: "#000000",
-    title: { text: null }
-  },
-  tooltip: { enabled: false },
-  legend: { enabled: false },
-  credits: { enabled: false }
+    tooltip: { enabled: false },
+    legend: { enabled: false },
+    credits: { enabled: false }
+  });
 });
-}
 {% endif %}
 
 </script>

@@ -10,33 +10,10 @@
 </svg>
 {%- endcapture %}
 
-{% assign sortable_rows = '' | split: '' %}
-
-{% for plugin in data.plugins %}
-	{% assign state_priority = 0 %}
-	{% if plugin.state == 'error' %}
-		{% assign state_priority = 2 %}
-	{% elsif plugin.state == 'degraded' %}
-		{% assign state_priority = 1 %}
-	{% endif %}
-	{% assign connections = plugin.installs | plus: plugin.forks %}
-	{% capture state_padded %}00{{ state_priority }}{% endcapture %}
-	{% assign state_padded = state_padded | slice: -2, 2 %}
-	{% capture score_padded %}0000000000{{ connections }}{% endcapture %}
-	{% assign score_padded = score_padded | slice: -10, 10 %}
-	{% capture sortable_row %}{{ state_padded }}{{ score_padded }}::{{ forloop.index0 }}{% endcapture %}
-	{% assign sortable_row_array = sortable_row | split: '|||SINGLE_ITEM|||' %}
-	{% assign sortable_rows = sortable_rows | concat: sortable_row_array %}
-{% endfor %}
-
-{% assign sortable_rows = sortable_rows | sort | reverse %}
+{% assign plugins_sorted = data.plugins %}
+{% if plugins_sorted == blank %}
 {% assign plugins_sorted = '' | split: '' %}
-
-{% for row in sortable_rows %}
-	{% assign plugin_index = row | split: '::' | last | plus: 0 %}
-	{% assign plugin_array = data.plugins | slice: plugin_index, 1 %}
-	{% assign plugins_sorted = plugins_sorted | concat: plugin_array %}
-{% endfor %}
+{% endif %}
 
 {% assign growth_chart_landscape_id = "growth_chart_landscape_" | append_random %}
 {% assign growth_chart_portrait_id = "growth_chart_portrait_" | append_random %}

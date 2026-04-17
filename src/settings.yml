@@ -19,11 +19,20 @@ custom_fields:
   github_url: https://github.com/stephenyeargin/trmnl-plugin-analytics
   learn_more_url: https://trmnl.com/analytics
   email_address: stephen@yearg.in
-  category: analytics
 - keyname: trmnl_api_key
   field_type: password
   name: TRMNL API Key
   description: Go to Account > User API Key
   placeholder: user_abcdef123456
+- keyname: sort_by
+  field_type: select
+  name: Sort Table By
+  description: How you want to sort the plugin table, unhealthy plugins always shown first
+  options:
+  - Alphabetically by name (A-Z): alpha
+  - Count of installs (descending): install
+  - Count of forks (descending): forks
+  - Count of connections (forks + installs, descending): connections
+  default: connections
 name: TRMNL Plugin Analytics
 refresh_interval: 120

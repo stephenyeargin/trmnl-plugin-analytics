@@ -66,32 +66,32 @@
 <div class="grid grid--cols-1 px--5 w--full">
   <div class="row">
     <div class="grow">
-      <div class="bg--error h--{{ bar_height }}" style="width: {{ data.health.erroring.percent | default: 0.5 }}%; overflow: hidden;">&nbsp;</div>
+      <div class="bg--error h--{{ bar_height }}" style="width: {{ data.health.erroring.percent | times: 100 | default: 0.5 }}%; overflow: hidden;">&nbsp;</div>
     </div>
     <div class="text--right">
       <span class="label label--small lg:label--base">Erroring</span>
       <span>&nbsp;</span>
-      <span class="value value--xxsmall lg:value--base">{{ data.health.erroring.percent | round: 0 }}%</span>
+      <span class="value value--xxsmall lg:value--base">{{ data.health.erroring.percent | times: 100 | round: 1 }}%</span>
     </div>
   </div>
   <div class="row">
     <div class="grow">
-      <div class="bg--warning h--{{ bar_height }}" style="width: {{ data.health.degraded.percent | default: 0.5 }}%; overflow: hidden;">&nbsp;</div>
+      <div class="bg--warning h--{{ bar_height }}" style="width: {{ data.health.degraded.percent | times: 100 | default: 0.5 }}%; overflow: hidden;">&nbsp;</div>
     </div>
     <div class="text--right">
       <span class="label label--small lg:label--base">Degraded</span>
       <span>&nbsp;</span>
-      <span class="value value--xxsmall lg:value--base">{{ data.health.degraded.percent | round: 0 }}%</span>
+      <span class="value value--xxsmall lg:value--base">{{ data.health.degraded.percent | times: 100 | round: 1 }}%</span>
     </div>
   </div>
   <div class="row">
     <div class="grow">
-      <div class="bg--success h--{{ bar_height }}" style="width: {{ data.health.healthy.percent | default: 0.5 }}%; overflow: hidden;">&nbsp;</div>
+      <div class="bg--success h--{{ bar_height }}" style="width: {{ data.health.healthy.percent | times: 100 | default: 0.5 }}%; overflow: hidden;">&nbsp;</div>
     </div>
     <div class="text--right">
       <span class="label label--small lg:label--base">Healthy</span>
       <span>&nbsp;</span>
-      <span class="value value--xxsmall lg:value--base">{{ data.health.healthy.percent | round: 0 }}%</span>
+      <span class="value value--xxsmall lg:value--base">{{ data.health.healthy.percent | times: 100 | round: 1 }}%</span>
     </div>
   </div>
 </div>

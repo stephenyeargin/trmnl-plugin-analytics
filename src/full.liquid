@@ -5,14 +5,12 @@
 
   <div class="w--[50cqw] h--full">
     <div class="layout layout--col h--full">
-      {% if data.growth | size > 0 %}
       <div class="w--full">
         <div class="text--center">
           <span class="description description--small">7 Day Connection Growth Trend</span>
         </div>
         <div class="h--[28cqh]" id="{{ growth_chart_landscape_id }}"></div>
       </div>
-      {% endif %}
 
       <div class="w--full stretch-y">
         <div class="flex flex--row flex--between mb--2">
@@ -56,14 +54,12 @@
     {% render 'table' plugins_sorted: plugins_sorted %}
   </div>
 
-  {% if data.growth | size > 0 %}
   <div class="h--[25cqh] py--5 w--full">
     <div class="text--center mb--1">
       <span class="description description--small">7 Day Connection Growth Trend</span>
     </div>
     <div class="h--full" id="{{ growth_chart_portrait_id }}"></div>
   </div>
-  {% endif %}
 
   <div class="h--[25cqh] w--full">
     <div class="text--center h--7">
@@ -113,12 +109,51 @@
 </div>
 
 <script>
-{% if data.growth | size > 0 %}
-const growthData = {{ data.growth | json }};
-const formattedData = growthData.map(([date, value]) => [
-  new Date(date).getTime(),
-  value
-]);
+const rawGrowthData = {{ data.growth | json }};
+const dayMs = 24 * 3600 * 1000;
+const toNumber = (value) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+const toUtcDay = (value) => {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+};
+
+const growthLookup = Array.isArray(rawGrowthData)
+  ? rawGrowthData.reduce((lookup, entry) => {
+      if (!Array.isArray(entry) || entry.length < 2) {
+        return lookup;
+      }
+
+      const day = toUtcDay(entry[0]);
+
+      if (day === null) {
+        return lookup;
+      }
+
+      lookup.set(day, toNumber(entry[1]));
+      return lookup;
+    }, new Map())
+  : new Map();
+
+const today = new Date();
+const todayUtc = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+const latestGrowthDay = growthLookup.size > 0 ? Math.max(...growthLookup.keys()) : todayUtc;
+const endDay = Math.max(todayUtc, latestGrowthDay);
+const formattedData = Array.from({ length: 7 }, (_, index) => {
+  const day = endDay - (6 - index) * dayMs;
+
+  return [
+    day,
+    growthLookup.get(day) ?? 0
+  ];
+});
 
 const chartTargetIds = [
   "{{ growth_chart_portrait_id }}",
@@ -188,6 +223,5 @@ chartTargetIds.forEach((chartTargetId) => {
     credits: { enabled: false }
   });
 });
-{% endif %}
 
 </script>

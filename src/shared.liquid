@@ -49,10 +49,10 @@
         {% endif %}
       </td>
       <td class="text--right portrait:hidden">
-        <span class="label label--small lg:label--base">{{ plugin.installs }}</span>
+        <span class="label label--small lg:label--base" data-value-format="true" data-value-locale="{{ trmnl.user.locale }}">{{ plugin.installs }}</span>
       </td>
       <td class="text--right portrait:hidden">
-        <span class="label label--small lg:label--base">{{ plugin.forks }}</span>
+        <span class="label label--small lg:label--base" data-value-format="true" data-value-locale="{{ trmnl.user.locale }}">{{ plugin.forks }}</span>
       </td>
     </tr>
     {% else %}
@@ -71,7 +71,7 @@
     <div class="text--right">
       <span class="label label--small lg:label--base">Erroring</span>
       <span>&nbsp;</span>
-      <span class="value value--xxsmall lg:value--base">{{ data.health.erroring.percent | times: 100 | round: 1 }}%</span>
+      <span class="value value--xxsmall lg:value--base"><span data-value-format="true" data-value-locale="{{ trmnl.user.locale }}">{{ data.health.erroring.percent | times: 100 | round: 1 }}</span>%</span>
     </div>
   </div>
   <div class="row">
@@ -81,7 +81,7 @@
     <div class="text--right">
       <span class="label label--small lg:label--base">Degraded</span>
       <span>&nbsp;</span>
-      <span class="value value--xxsmall lg:value--base">{{ data.health.degraded.percent | times: 100 | round: 1 }}%</span>
+      <span class="value value--xxsmall lg:value--base"><span data-value-format="true" data-value-locale="{{ trmnl.user.locale }}">{{ data.health.degraded.percent | times: 100 | round: 1 }}</span>%</span>
     </div>
   </div>
   <div class="row">
@@ -91,7 +91,7 @@
     <div class="text--right">
       <span class="label label--small lg:label--base">Healthy</span>
       <span>&nbsp;</span>
-      <span class="value value--xxsmall lg:value--base">{{ data.health.healthy.percent | times: 100 | round: 1 }}%</span>
+      <span class="value value--xxsmall lg:value--base"><span data-value-format="true" data-value-locale="{{ trmnl.user.locale }}">{{ data.health.healthy.percent | times: 100 | round: 1 }}</span>%</span>
     </div>
   </div>
 </div>

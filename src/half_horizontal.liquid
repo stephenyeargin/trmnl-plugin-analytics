@@ -1,6 +1,6 @@
 <div class="layout layout--row layout--top gap gap--large portrait:hidden">
   <div class="w--[50cqw] h--full">
-    {% render 'table' plugins_sorted: plugins_sorted %}
+    {% render 'table', trmnl: trmnl, plugins_sorted: plugins_sorted %}
   </div>
 
   <div class="w--[50cqw] h--full">
@@ -34,7 +34,7 @@
           <span class="description description--small">Plugin Health (All Connections)</span>
         </div>
 
-        {% render 'plugin_health_status' data: data, bar_height: 4 %}
+        {% render 'plugin_health_status', trmnl: trmnl, data: data, bar_height: 4 %}
       </div>
     </div>
   </div>
@@ -43,7 +43,7 @@
 <div class="hidden portrait:block w--full">
   <div class="layout layout--col layout--stretch-x gap w--full">
   <div class="h--[50cqh] overflow-hidden w--full">
-    {% render 'table' plugins_sorted: plugins_sorted %}
+    {% render 'table', trmnl: trmnl, plugins_sorted: plugins_sorted %}
   </div>
 
   <div class="h--[25cqh] w--full">
@@ -51,7 +51,7 @@
       <span class="description description--small">Plugin Health (All Connections)</span>
     </div>
 
-    {% render 'plugin_health_status' data: data, bar_height: 8 %}
+    {% render 'plugin_health_status', trmnl: trmnl, data: data, bar_height: 8 %}
   </div>
   </div>
 </div>

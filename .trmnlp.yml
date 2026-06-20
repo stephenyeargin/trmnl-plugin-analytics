@@ -16,5 +16,8 @@ variables:
   trmnl: {
     plugin_settings: {
       instance_name: 'Plugin Analytics'
+    },
+    user: {
+      locale: 'en-US'
     }
   }

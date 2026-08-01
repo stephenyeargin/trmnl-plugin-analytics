@@ -35,5 +35,5 @@ custom_fields:
   - Count of connections (forks + installs, descending): connections
   default: connections
 name: TRMNL Plugin Analytics
-description: Usage stats across your own TRMNL plugins
+description: Usage stats across your installs
 refresh_interval: 120

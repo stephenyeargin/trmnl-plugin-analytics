@@ -147,13 +147,28 @@ const today = new Date();
 const todayUtc = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
 const latestGrowthDay = growthLookup.size > 0 ? Math.max(...growthLookup.keys()) : todayUtc;
 const endDay = Math.max(todayUtc, latestGrowthDay);
+const earliestGrowthDay = growthLookup.size > 0 ? Math.min(...growthLookup.keys()) : endDay;
+
+// growthLookup holds absolute connection counts, not deltas, so walk
+// backward to the nearest known day when a specific day is missing.
+const getConnectionsForDay = (day) => {
+  for (let cursor = day; cursor >= earliestGrowthDay; cursor -= dayMs) {
+    if (growthLookup.has(cursor)) {
+      return growthLookup.get(cursor);
+    }
+  }
+  return null;
+};
+
 const formattedData = Array.from({ length: 7 }, (_, index) => {
   const day = endDay - (6 - index) * dayMs;
+  const currentConnections = getConnectionsForDay(day);
+  const previousConnections = getConnectionsForDay(day - dayMs);
+  const delta = currentConnections !== null && previousConnections !== null
+    ? currentConnections - previousConnections
+    : 0;
 
-  return [
-    day,
-    growthLookup.get(day) ?? 0
-  ];
+  return [day, delta];
 });
 
 const chartTargetIds = [
@@ -168,6 +183,7 @@ chartTargetIds.forEach((chartTargetId) => {
     chart: {
       type: "column",
       animation: false,
+      spacingTop: 16,
     },
 
     series: [{
@@ -197,9 +213,12 @@ chartTargetIds.forEach((chartTargetId) => {
     yAxis: {
       allowDecimals: false,     // ✅ only whole numbers
       tickInterval: 1,          // ✅ enforce integer steps
-      min: 0,                   // optional but helpful
       labels: {
-        style: { fontSize: "16px", color: "#000000" }
+        style: { fontSize: "16px", color: "#000000" },
+        y: -2, // keep the 0 label clear of the axis line so it doesn't dither into it
+        formatter() {
+          return this.value > 0 ? `+${this.value}` : `${this.value}`;
+        }
       },
       gridLineDashStyle: "shortdot",
       gridLineWidth: 1,

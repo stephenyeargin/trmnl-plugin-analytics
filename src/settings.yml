@@ -5,11 +5,14 @@ dark_mode: 'no'
 static_data: ''
 polling_verb: get
 framework_version: latest
-serverless_language: ''
+serverless_language: node
+refresh_interval_floor: ''
 polling_url: https://trmnl.com/analytics.json
 polling_headers: authorization=Bearer%20{{trmnl_api_key}}
 polling_body: ''
 id: 286220
+oauth_enabled: 'false'
+oauth_pkce_enabled: 'no'
 custom_fields:
 - keyname: author_bio
   name: About This Plugin

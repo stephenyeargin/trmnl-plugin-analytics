@@ -87,14 +87,13 @@
     <div class="text--center h--7">
       <span class="description description--small">Plugin Health (All Connections)</span>
     </div>
-  
-  {% render 'plugin_health_status', trmnl: trmnl, data: data, bar_height: 8 %}
+    {% render 'plugin_health_status', trmnl: trmnl, data: data, bar_height: 8 %}
   </div>
 </div>
 
 <div class="title_bar">
   <img class="image image-stroke--medium" src="data:image/svg+xml;base64,{{ logo_svg | base64_encode }}" />
-  <span class="title">Updated {{ 'now' | date: '%B %-d, %Y' }}</span>
+  <span class="title">Updated {{ 'now' | date: '%s' | plus: trmnl.user.utc_offset | date: '%B %-d, %Y' }}</span>
   <span class="instance">{{ trmnl.plugin_settings.instance_name }}</span>
 </div>
 

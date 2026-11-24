@@ -18,6 +18,9 @@ variables:
       instance_name: 'Plugin Analytics'
     },
     user: {
-      locale: 'en-US'
+      locale: 'en-US',
+      time_zone: 'Central Time (US & Canada)',
+      time_zone_iana: 'America/Chicago',
+      utc_offset: -21600
     }
   }
